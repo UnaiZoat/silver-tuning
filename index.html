@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALLER URBANO - Mantenimiento de Precisión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- VARIABLES DE DISEÑO --- */
+        :root {
+            --bg-body: #f4f4f4;        /* Gris hormigón muy claro */
+            --bg-dark: #121212;        /* Negro asfalto */
+            --bg-section: #fff;       /* Blanco puro formal */
+            --text-dark: #333;
+            --text-light: #fff;
+            --acento: #ff5e00;         /* Naranja Industrial */
+            --borde: #333;             /* Para detalles formales */
+            --font-main: 'Open Sans', sans-serif;
+            --font-title: 'Montserrat', sans-serif;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- ESTILOS GENERALES --- */
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            background-color: var(--bg-body);
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNhY2VudG8iIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTAgMGg0MHY0MEgwVjB6bTIwIDIwaDIwdjIwSDIWMjB6TTAgMjBoMjB2MjBIMFYyMHoyMCAwaDIwdjIwSDIwVjB6Ii8+PC9nPjwvZz48L3N2Zz4='); /* Sutil patrón urbano */
+        }
+
+        h1, h2, h3 { font-family: var(--font-title); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        p { line-height: 1.6; color: #555; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; padding: 0; }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        /* --- BOTÓN ESTILO URBANO-FORMAL --- */
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-title);
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 2px solid var(--bg-dark);
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+        .btn:hover {
+            background: var(--acento);
+            border-color: var(--acento);
+            color: var(--text-dark);
+        }
+
+        /* --- 1. HEADER & MENÚ --- */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 3px solid var(--bg-dark);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+       .logo img {
+    height: 60px;       /* Altura controlada para el menú */
+    width: auto;        /* Mantiene la proporción */
+    display: block;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); /* Opcional: le da un toque de relieve */
+}
+
+/* Ajuste específico para el logo del footer si quieres que sea distinto */
+.footer-logo img {
+    height: 50px;
+    margin-bottom: 15px;
+}
+
+        nav ul { display: flex; gap: 30px; }
+        nav a { font-weight: 600; text-transform: uppercase; font-size: 0.9rem; }
+        nav a:hover { color: var(--acento); }
+
+        /* --- 2. HERO SECTION --- */
+        #hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), 
+                        url('https://images.unsplash.com/photo-1486006920555-c77dcf18193c?q=80&w=2000') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-light);
+            margin-top: 80px; /* Altura del header */
+        }
+
+        #hero h1 { font-size: 3.5rem; margin-bottom: 10px; }
+        #hero p { font-size: 1.2rem; color: #ccc; margin-bottom: 30px; font-weight: 300; }
+
+        /* --- 3. SERVICIOS (Tarjetas) --- */
+        #servicios { background: var(--bg-section); }
+        .section-title { text-align: center; margin-bottom: 60px; font-size: 2.2rem; }
+        .section-title::after { content:''; display: block; width: 60px; height: 4px; background: var(--acento); margin: 15px auto 0; }
+
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .servicio-card {
+            background: var(--bg-body);
+            padding: 40px;
+            border-bottom: 4px solid var(--bg-dark);
+            transition: 0.3s;
+        }
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--acento);
+            box-shadow: var(--shadow);
+        }
+        .servicio-card h3 { color: var(--bg-dark); margin-bottom: 15px; }
+        .servicio-card p { font-size: 0.95rem; }
+
+        /* --- 4. NOSOTROS/PORQUÉ --- */
+        #nosotros { background: var(--bg-dark); color: var(--text-light); position: relative; }
+        #nosotros .section-title { color: var(--text-light); }
+        #nosotros p { color: #aaa; }
+
+        .nosotros-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .nosotros-puntos ul { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .nosotros-puntos li {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-left: 3px solid var(--acento);
+            font-weight: 600;
+        }
+
+        /* --- 5. SECCIÓN CITAS & FORMULARIO --- */
+        #citas { background: var(--bg-section); position: relative; padding-bottom: 0;}
+        #citas .container { padding-bottom: 10px; }
+
+        .citas-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            align-items: flex-start;
+        }
+
+        .form-info h3 { margin-top: 0; }
+
+        .form-container {
+            background: var(--bg-body);
+            padding: 50px;
+            margin-top: -120px; /* Eleva el form sobre la sección anterior */
+            position: relative;
+            z-index: 10;
+            border-top: 6px solid var(--acento);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .form-group { margin-bottom: 25px; }
+        .form-group label {
+            display: block;
+            font-family: var(--font-title);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: var(--bg-dark);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            background: var(--bg-section);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            color: var(--text-dark);
+            box-sizing: border-box;
+            border-radius: 0; /* Totalmente cuadrado */
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--bg-dark);
+        }
+
+        /* --- 6. FOOTER & CONTACTO --- */
+        footer {
+            background: var(--bg-dark);
+            color: #888;
+            padding: 60px 0 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        
+
+        .footer-col h4 { color: var(--text-light); margin-bottom: 20px; text-transform: uppercase; font-size: 1rem; }
+        .footer-col p { margin: 8px 0; color: #888;}
+
+        .copy { text-align: center; border-top: 1px solid #333; padding-top: 20px; margin-top: 20px; font-size: 0.8rem; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 992px) {
+            #hero h1 { font-size: 2.8rem; }
+            .nosotros-content, .citas-wrapper { grid-template-columns: 1fr; }
+            .form-container { margin-top: 0; padding: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; height: auto; padding: 15px 0; }
+            nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; padding-top: 10px;}
+            #hero { height: 70vh; margin-top: 110px; }
+            #hero h1 { font-size: 2rem; }
+            .container { padding: 50px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" style="padding: 0;">
+            <div class="header-content">
+                <div class="logo">
+    <img src="logo.jpeg" alt="Taller Urbano Logo">
+</div>
+                <nav>
+                    <ul>
+                        <li><a href="#hero">Inicio</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="#citas">Pedir Cita</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="container_hero">
+            <h1>Mecánica Profesional</h1>
+            <p>Estilo Urbano. Rigor Formal. Tu coche en las mejores manos.</p>
+            <a href="#citas" class="btn">Reserva tu cita online</a>
+        </div>
+    </section>
+
+    <section id="servicios">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="servicios-grid">
+                <div class="servicio-card">
+                    <h3>Mantenimiento</h3>
+                    <p>Revisiones oficiales, cambios de aceite, filtros y puesta a punto para tu seguridad diaria.</p>
+                </div>
+                <div class="servicio-card">
+                    <h3>Frenos y Suspensión</h3>
+                    <p>Seguridad máxima con especialistas en sistemas de frenado, amortiguación y dirección.</p>
+                </div>
+                <div class="servicio-card">
+                    <h3>Diagnosis Digital</h3>
+                    <p>Equipos de última generación para detectar y solucionar cualquier fallo electrónico de tu vehículo.</p>
+                </div>
+                <div class="servicio-card">
+                    <h3>Neumáticos</h3>
+                    <p>Venta, montaje y equilibrado de las mejores marcas para garantizar el agarre en la ciudad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nosotros">
+        <div class="container">
+            <div class="nosotros-content">
+                <div>
+                    <h2 class="section-title" style="text-align: left;">Por qué elegirnos</h2>
+                    <p>Combinamos la pasión por la cultura urbana con la máxima exigencia formal. No somos solo un taller, somos especialistas obsesionados con la precisión y el rendimiento de tu vehículo.</p>
+                    <p>Transparencia absoluta y rapidez, sin comprometer nunca la calidad técnica.</p>
+                </div>
+                <div class="nosotros-puntos">
+                    <ul>
+                        <li>Técnicos Certificados</li>
+                        <li>Equipos Avanzados</li>
+                        <li>Recambios Originales</li>
+                        <li>Precios Transparentes</li>
+                        <li>Garantía por Escrito</li>
+                        <li>Rapidez Urbana</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="citas">
+        <div class="container">
+            <div class="citas-wrapper">
+                <div class="form-info">
+                    <h2 class="section-title" style="text-align: left;">Reserva tu Cita</h2>
+                    <h3>Rápido. Formal. Online.</h3>
+                    <p>Rellena el formulario con tus datos y los de tu vehículo. Te confirmaremos la hora exacta de tu cita lo antes posible por teléfono o email.</p>
+                    <p>Si es una urgencia, llámanos directamente al <strong><a href="tel:600000000" style="color: var(--acento);">600 000 000</a></strong>.</p>
+                </div>
+
+                <div class="form-container">
+                    <form action="https://formspree.io/f/tu-id-formspree" method="POST">
+                        <div class="form-group">
+                            <label for="nombre">Nombre Completo</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan García" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" placeholder="600 000 000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email (Opcional)</label>
+                            <input type="email" id="email" name="email" placeholder="juan@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vehiculo">Vehículo (Marca, Modelo, Año)</label>
+                            <input type="text" id="vehiculo" name="vehiculo" placeholder="Ej. Volkswagen Golf 2020" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="servicio">Servicio Principal</label>
+                            <select id="servicio" name="servicio">
+                                <option value="revision">Revisión General / Aceite</option>
+                                <option value="frenos">Frenos y Seguridad</option>
+                                <option value="diagnosis">Diagnosis Electrónica</option>
+                                <option value="itv">Pre-ITV</option>
+                                <option value="otro">Otro Servicio (especificar abajo)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fecha">Fecha Preferida</label>
+                            <input type="date" id="fecha" name="fecha" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mensaje">Notas o Detalles del Problema</label>
+                            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Describe brevemente qué necesita tu coche..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn">Solicitar Cita Ahora</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="logo footer-logo">
+    <img src="logo.jpeg" alt="Taller Urbano Logo">
+</div>
+                    <p>Mecánica de precisión con ADN de ciudad. Rigor y estilo en cada reparación.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Dónde Estamos</h4>
+                    <p>Calle Guay, 42</p>
+                    <p>11100 SAN FERNANDO</p>
+                    <p><a href="https://maps.google.com" target="_blank" style="color: var(--acento); text-decoration: underline;">Ver en Google Maps</a></p>
+                </div>
+                <div class="footer-col">
+                    <h4>Horario y Contacto</h4>
+                    <p>Lun - Vie: 08:30 - 18:30</p>
+                    <p>Sáb: 09:00 - 13:00</p>
+                    <p>Tlf: 600 123 456</p>
+                    <p>Email: info@silvertuning.com</p>
+                </div>
+            </div>
+            <div class="copy">
+                &copy; 2024 Silver Tuning SL. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
